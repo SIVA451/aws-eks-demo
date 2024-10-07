@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-2048-deployment
+  namespace: default  # Changed to default namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "game-2048"  # Ensure this value is a string
+  template:
+    metadata:
+      labels:
+        app: "game-2048"  # Ensure this value is a string
+    spec:
+      containers:
+      - name: game-2048
+        image: alexwhen/docker-2048
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-2048-service
+  namespace: default  # Changed to default namespace
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+spec:
+  selector:
+    app: "game-2048"
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
