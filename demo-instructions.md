@@ -17,6 +17,7 @@ Run the following command to create a new EKS cluster with Fargate support:
 
 ```bash
 eksctl create cluster --name my-cluster --region us-west-2 --fargate
+eksctl create cluster --name my-cluster --region us-west-2 --fargate --version 1.31
 ```
 
 ### 2. Configure kubectl
